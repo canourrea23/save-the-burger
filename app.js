@@ -39,26 +39,29 @@ class Veggies {
     render() {
         ctx.drawImage(image2, this.x, this.y, this.width, this.height)
     }
+    
 }
 
-const player = new Sprite(180, 495, 25, 25)
+const player = new Sprite(180, 500, 25, 25)
 const veggie = new Veggies(145, 30, 30, 30)
 
+
 class Projectile {
-    constructor(x, y, width, height){
+    constructor(x, y, width, color, speed, height){
         this.x = x
         this.y = y
         this.width = width
         this.height = height
         this.color = color
-        this.velocity = velocity
+        this.speed =-2.5
     }
     render() {
       ctx.fillStyle = this.color
-      ctx.fillRect(this.x, this.y, this.width, this.height)
+      ctx.fillRect(this.x, this.y += this.speed, this.width, this.height)
     }
 }
-
+  const bullet = new Projectile(190, 490, 2 , '#6645b3', 5, 7)
+  
 player.render()
 
 // document.getElementById('status').addEventListener('click', function() {
@@ -99,6 +102,8 @@ function rePaint()  {
   ctx.clearRect(0, 0, game.width, game.height)
     player.render()
     veggie.render()
+    bullet.render()
+    console.log(bullet)
 }
   //render the player and the veggies
 //   player.render()
