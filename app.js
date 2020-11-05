@@ -1,13 +1,15 @@
 const movementDisplay = document.querySelector('#movement')
 const game = document.querySelector('#game')
 const image = document.getElementById('krabby')
-// const image = document.getElementById('broccoli')
+const image2 = document.getElementById('broccoli')
 // syncing up the canvas's internal height&width to its apparent height&width
 const computedStyle = getComputedStyle(game)
 const height = computedStyle.height
 const width = computedStyle.width
-// game.height = height.replace('px', '')
-// game.width = width.replace('px', '')
+
+game.height = height.replace('px', '')
+game.width = width.replace('px', '')
+
 
 
 
@@ -26,18 +28,36 @@ class Sprite {
         ctx.drawImage(image, this.x, this.y, this.width, this.height)
     }
 }
+class Veggies {
+    constructor(x, y, width, height) {
+        this.x = x
+        this.y = y
+        this.width = width
+        this.height = height
+        this.alive = true
+    }
+    render() {
+        ctx.drawImage(image2, this.x, this.y, this.width, this.height)
+    }
+}
+
+const player = new Sprite(180, 495, 25, 25)
+const veggie = new Veggies(145, 30, 30, 30)
+
 class Projectile {
     constructor(x, y, width, height){
         this.x = x
         this.y = y
         this.width = width
         this.height = height
+        this.color = color
         this.velocity = velocity
     }
+    render() {
+      ctx.fillStyle = this.color
+      ctx.fillRect(this.x, this.y, this.width, this.height)
+    }
 }
-
-const player = new Sprite(145, 140, 10, 10)
-
 
 player.render()
 
@@ -46,16 +66,21 @@ player.render()
 // })
 
 document.addEventListener('keydown', function(evt) {
-  if (evt.key === 'ArrowUp' && player.y > 110) {
-    player.y -= 10
+  if (evt.key === 'ArrowUp' && player.y > 420) {
+    player.y -= 25
   } else if (evt.key === 'ArrowLeft' && player.x > 0) {
-    player.x -= 10
-  } else if (evt.key === 'ArrowDown' && player.y < 140) {
-    player.y += 10
-  } else if (evt.key === 'ArrowRight' && player.x < 290) {
-    player.x += 10
+    player.x -= 25
+  } else if (evt.key === 'ArrowDown' && player.y < 495) {
+    player.y += 25
+  } else if (evt.key === 'ArrowRight' && player.x < 360) {
+    player.x += 25
+  } else if (evt.keyCode === 32) {
+    console.log('x', player.x)
+    console.log('y', player.y)
+    // Projectile.y
   }
-  console.log(player)
+
+  console.log(typeof evt.keyCode)
   movementDisplay.textContent = `X: ${player.x}, Y: ${player.y}`
 })
 
@@ -73,6 +98,7 @@ function rePaint()  {
   // clear off the entire canvas
   ctx.clearRect(0, 0, game.width, game.height)
     player.render()
+    veggie.render()
 }
   //render the player and the veggies
 //   player.render()
