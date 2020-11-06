@@ -82,22 +82,27 @@ const veggie = new Veggies(145, 30, 30, 30)
   
   
 const arrVeggies = [];
-for (let row = 0; row < 5; row++) {
-  for(let col = 0; col < 9; col++){
-    const veggie = new Veggies (
-      col * 35 + 33, row * 35 + 15, 30, 30)
-      arrVeggies.push(veggie)
-    }
+function populateVeggies() {
+  for(let row = 0; row < 5; row++) {
+     for(let col = 0; col < 9; col++){
+      const veggie = new Veggies (
+        col * 35 + 33, row * 35 + 15, 30, 30)
+        arrVeggies.push(veggie)
+     }
   }
-  arrVeggies.forEach(function(par){
-    par.render()
-  })
+}
+
+populateVeggies()
   
-  function changeMovement () {
+  function changeMovement (resetStatus) {
+    if (resetStatus) {
+      arrVeggies.length = 0
+      populateVeggies()
+    } else
     arrVeggies.forEach(function(veggie) {
       if (veggie.x >= 360) {
-        arrVeggies.forEach(function(ex) {
-          ex.speed *= -1
+        arrVeggies.forEach(function(ex) {         
+          ex.speed *= -1                          
           ex.y += 15  
           ex.x -= 2 
         }) } else if (veggie.x <= 10) {
@@ -105,7 +110,8 @@ for (let row = 0; row < 5; row++) {
             ex.speed *= -1
             ex.y += 15 
             ex.x += 2
-          }) }
+          }) } 
+          
         })
       }
         // player.render()
@@ -140,7 +146,8 @@ for (let row = 0; row < 5; row++) {
         // }
 
             
-    function rePaint()  {
+    function rePaint(resetStatus = false)  {
+      console.log('rePaint')
       ctx.clearRect(0, 0, game.width, game.height)
       player.render()
       arrVeggies.forEach(function (veggie){
@@ -149,19 +156,18 @@ for (let row = 0; row < 5; row++) {
       arrProjectiles.forEach(function (bullet){
       bullet.render()
     })
-      changeMovement()  
+      changeMovement(resetStatus)  
     }
     
 
     document.getElementById('status').addEventListener('click', function() {
-      if (document.getElementById.textContent = 'Start Game') {
+      if (document.getElementById('status').textContent = 'Start Game') {
         setInterval(rePaint, 1000 / 60)
         document.getElementById('status').textContent = 'Reset Game'
-      } else {
-        
-        
-        
-      
+      } else if(document.getElementById('status').textContent= 'Reset Game') {
+        setInterval(() => rePaint(true), 1000 / 60);
+        document.getElementById('status').textContent = 'Start Game'
+
       }
     })
   //render the player and the veggies
@@ -172,6 +178,18 @@ for (let row = 0; row < 5; row++) {
 
 //   detectHit()
 
+
+
+// for (let row = 0; row < 5; row++) {
+  //   for(let col = 0; col < 9; col++){
+  //     const veggie = new Veggies (
+  //       col * 35 + 33, row * 35 + 15, 30, 30)
+  //       arrVeggies.push(veggie)
+  //     }
+  //   }
+    // arrVeggies.forEach(function(par){
+    //   par.render()
+    // })
 
 
 
