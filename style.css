@@ -54,9 +54,9 @@ html,body {
   #top-right {
     grid-area: top-right;
   }
-  .reset {
+  /* .reset {
     
-  }
+  } */
 
   
   main {
@@ -77,8 +77,14 @@ html,body {
       /* height: 50px;
       width: 50px; */
   }
+  #drop{
+    display: none;
+  }
 
   #broccoli{
+    display: none;
+  }
+  #lose{
     display: none;
   }
   #status {
@@ -90,5 +96,8 @@ html,body {
   #right {
     font-size: 10px;
     font-weight: bolder;
+  }
+  #left{
+    font-size: 12px;
   }
 
