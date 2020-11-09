@@ -46,7 +46,7 @@ class Veggies {
     this.y = y
     this.width = width
     this.height = height
-    this.speed = 5
+    this.speed = 1.25
     this.alive = true
   }
   render() {
@@ -60,7 +60,6 @@ class Projectile {
     this.y = y
     this.width = width
     this.height = height
-
     this.speed =-1.5
   }
   render() {
@@ -145,7 +144,6 @@ populateVeggies()
                     arrVeggies.splice(a,1)
                     arrProjectiles.splice(b,1)
                     gameScore += 25
-                    console.log(gameScore)
                  }
             }
         }
@@ -173,20 +171,16 @@ populateVeggies()
           if (playerHealth === 2) {
             document.getElementById('btm-left').textContent = 'Lives 🍔  🍔'
           } else if (playerHealth === 1) {
-            document.getElementById('btm-left').textContent = 'Lives 🍔' 
+            document.getElementById('btm-left').textContent = 'Lives 🍔'
           }
         }
-      }
-      function stopSound() {
-        fail.pause()
-      }
-
+      }    
       function gameOver() {
         if (playerHealth < 1) {
-          document.getElementById('btm-left').textContent = 'Game Over'
           playerImage = image4  
           arrVeggies.length = 0        
           player.alive = true
+          document.getElementById('btm-left').textContent = 'Game Over'
           start.pause()
           fail.play()
         }
@@ -196,14 +190,12 @@ populateVeggies()
         if (arrVeggies.length === 0) {
           document.getElementById('btm-left').textContent = 'Game Won'
           player.alive = true
-          player.render()
-          
+          player.render()          
         }
       }
         function scoreUpdate() {
          document.getElementById('top-left').textContent = 'SCORE:' + gameScore   
     }
-
     //resart function   
     function rePaint(resetStatus = false)  {
       if (resetStatus){
@@ -220,7 +212,6 @@ populateVeggies()
         }
         player.render()
       }  
-    
 
       ctx.clearRect(0, 0, game.width, game.height)
       arrVeggies.forEach(function (veggie){

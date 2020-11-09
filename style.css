@@ -12,7 +12,7 @@ html,body {
     background-repeat: space;
   }
   
-  h1, h2, #top-left, #btm-left{
+  h1, h2, #top-left, #btm-left {
     font-family: 'Press Start 2P', monospace;
     color: rgb(206, 136, 45);
   }
@@ -84,6 +84,7 @@ html,body {
     display: none;
   }
   #lose{
+    size: 50px;
     display: none;
   }
   #status {
