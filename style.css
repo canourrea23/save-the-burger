@@ -12,9 +12,8 @@ html,body {
     background-repeat: space;
   }
   
-  h1, h2 {
+  h1, h2, #top-left, #btm-left{
     font-family: 'Press Start 2P', monospace;
-    /* font-family: monospace; */
     color: rgb(206, 136, 45);
   }
   

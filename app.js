@@ -3,13 +3,18 @@ const game = document.querySelector('#game')
 const image = document.getElementById('krabby')
 const image2 = document.getElementById('broccoli')
 const image3 =document.getElementById('drop')
-const image4 = document.getElementById('salad')
+const image4 = document.getElementById('lose')
 const sound = document.getElementById('sound')
 const start = document.getElementById('start')
 const fail = document.getElementById('fail')
-const startGame = document.getElementById('status')
+const score = document.getElementById('top-left')
+
+let playerImage = image
+var gameScore = 0;
+//make append element
 let playerStatus = true
-// const gameScore = document.getElementById('status', 'score:, 0')
+let playerHealth = 3
+//const gameScore = document.getElementById('top-left', 'score:0')
 // syncing up the canvas's internal height&width to its apparent height&width
 const computedStyle = getComputedStyle(game)
 const height = computedStyle.height
@@ -21,10 +26,6 @@ game.width = width.replace('px', '')
 // grab a context from the canvas
 const ctx = game.getContext('2d')
 
-// document.getElementById('status').addEventListener('click', function() {
-  //   setInterval(rePaint, 1000 / 60)
-  // })
-
 //burger
 class Sprite {
   constructor(x, y, width, height) {
@@ -32,10 +33,10 @@ class Sprite {
     this.y = y
     this.width = width
     this.height = height
-    this.alive = playerStatus
+    this.alive = true
   }
   render() {
-    ctx.drawImage(image, this.x, this.y, this.width, this.height)
+    ctx.drawImage(playerImage, this.x, this.y, this.width, this.height)
   }
 }
 //veggies 
@@ -45,7 +46,7 @@ class Veggies {
     this.y = y
     this.width = width
     this.height = height
-    this.speed = 1.20
+    this.speed = 5
     this.alive = true
   }
   render() {
@@ -82,14 +83,14 @@ const arrProjectiles = [];
     fireStatus *= -1
   }
 //my objects on screen
-let player = new Sprite(180, 500, 25, 25, true)
+let player = new Sprite(180, 500, 25, 25)
 // const bullet = new Projectile(190, 490, 2 , '#6645b3', 5, 7)
 const veggie = new Veggies(145, 30, 30, 30)
   
 // veggies array
 const arrVeggies = [];                              
 function populateVeggies() {
-  for(let row = 0; row < 5; row++) {
+  for(let row = 0; row < 4; row++) {
      for(let col = 0; col < 9; col++){
       const veggie = new Veggies (
         col * 35 + 33, row * 35 + 15, 30, 30)
@@ -118,7 +119,7 @@ populateVeggies()
           }) }           
         })
       }
-        // player.render()
+     
   //key controls
   document.addEventListener('keydown', function(evt) {
     if (evt.key === 'ArrowUp' && player.y > 420) {
@@ -130,7 +131,6 @@ populateVeggies()
     } else if (evt.key === 'ArrowRight' && player.x < 360) {
       player.x += 30
     }
-    
     // console.log(typeof evt.keyCode)
     movementDisplay.textContent = `X: ${player.x}, Y: ${player.y}`
   })
@@ -144,58 +144,111 @@ populateVeggies()
                     && arrProjectiles[b].y + 17 > arrVeggies[a].y) {
                     arrVeggies.splice(a,1)
                     arrProjectiles.splice(b,1)
-                    //gameScore += 50
-                }
+                    gameScore += 25
+                    console.log(gameScore)
+                 }
             }
         }
     }
     function detectPlayerHit() {
       for(a = 0; a < arrVeggies.length; a++) {
-          // for(b = 0; b < player.length; b++) {
               if(player.x < arrVeggies[a].x + 33
                   && player.x + 3.5 > arrVeggies[a].x
                   && player.y < arrVeggies[a].y + 30
                   && player.y + 17 > arrVeggies[a].y) {
                   arrVeggies.splice(a,1)
-                  player.width = 0
-                  player.height = 0
+                  player.alive  =  false                 
                 }
-              }
+              } 
       }
-  // }
+      function spawn() {
+        if (player.alive === false) {
+          arrVeggies.splice(0, arrVeggies.length)
+          populateVeggies()
+          changeMovement()
+          player.alive = true
+          player.x = 180
+          player.y = 500
+          playerHealth -= 1
+          if (playerHealth === 2) {
+            document.getElementById('btm-left').textContent = 'Lives 🍔  🍔'
+          } else if (playerHealth === 1) {
+            document.getElementById('btm-left').textContent = 'Lives 🍔' 
+          }
+        }
+      }
+      function stopSound() {
+        fail.pause()
+      }
 
-    //game win if array veggies gone  
+      function gameOver() {
+        if (playerHealth < 1) {
+          document.getElementById('btm-left').textContent = 'Game Over'
+          playerImage = image4  
+          arrVeggies.length = 0        
+          player.alive = true
+          start.pause()
+          fail.play()
+        }
+      }
+      
+      function gameWon() {
+        if (arrVeggies.length === 0) {
+          document.getElementById('btm-left').textContent = 'Game Won'
+          player.alive = true
+          player.render()
+          
+        }
+      }
+        function scoreUpdate() {
+         document.getElementById('top-left').textContent = 'SCORE:' + gameScore   
+    }
 
     //resart function   
     function rePaint(resetStatus = false)  {
       if (resetStatus){
         arrVeggies.length = 0
         populateVeggies()
-        if (fireStatus){
-        } else fireStatus *= -1          
-        arrProjectiles.length = 0
-        player = new Sprite(180, 500, 25, 25)
-      return }
+        
+        if (fireStatus) {
+
+        } else {
+          fireStatus *= -1          
+          arrProjectiles.length = 0
+          player = new Sprite(180, 500, 25, 25)
+          return 
+        }
+        player.render()
+      }  
+    
+
       ctx.clearRect(0, 0, game.width, game.height)
-      player.render()
       arrVeggies.forEach(function (veggie){
         if (veggie.alive) {
           veggie.render()
-        }      
+        }        
         detectHit()
         detectPlayerHit()
-        
+        if (player.alive === true) {
+          player.render()
+        }
       })
       arrProjectiles.forEach(function (bullet){
         bullet.render()
       })
       changeMovement()
+      scoreUpdate()
+      spawn()
+      gameOver()
+      gameWon()
+      
     }
     //start button and reset button 
     document.getElementById('status').addEventListener('click', function() {
       // let timer = setInterval(rePaint, 1000 / 60)
       if (document.getElementById('status').textContent === 'Start Game') {
         setInterval(rePaint, 1000 / 60)
+        start.play()
         document.getElementById('status').textContent = 'Reset Game'
       } else if(document.getElementById('status').textContent ==='Reset Game') {
         for(i=0; i<100; i++)
@@ -206,30 +259,5 @@ populateVeggies()
         document.getElementById('status').textContent = 'Start Game'
       }
     })
-  // render the player and the veggies
-  // player.render()
-  // if (veggie.alive) {
-  //   veggie.render()
-  // }
-  // detectHit()
-// for (let row = 0; row < 5; row++) {
-  //   for(let col = 0; col < 9; col++){
-  //     const veggie = new Veggies (
-  //       col * 35 + 33, row * 35 + 15, 30, 30)
-  //       arrVeggies.push(veggie)
-  //     }
-  //   }
-    // arrVeggies.forEach(function(par){
-    //   par.render()
-    // })
-
-// function detectPlayerHit()
-//   for (a = 0; a < arrVeggies.length; a++) {
-//     for(b = 0; b < player. length; b++) {
-//       if(player[b].x < arrVeggies[a].x + 33 &&
-//     player.x < arrVeggies.x + arrVeggies.width &&
-//     player.x + player.width > arrVeggies.x &&
-//     player.y < arrVeggies.y + arrVeggies.height &&
-//     player.y + player.height > arrVeggies.y) {
-//      // collision detected!
-//  } 
+    
+  
