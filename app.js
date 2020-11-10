@@ -46,7 +46,7 @@ class Veggies {
     this.y = y
     this.width = width
     this.height = height
-    this.speed = 1.25
+    this.speed = .2
     this.alive = true
   }
   render() {
@@ -178,16 +178,15 @@ populateVeggies()
       function gameOver() {
         if (playerHealth < 1) {
           playerImage = image4  
-          arrVeggies.length = 0        
+          arrVeggies.length = 0         
           player.alive = true
           document.getElementById('btm-left').textContent = 'Game Over'
           start.pause()
           fail.play()
         }
-      }
-      
+      }     
       function gameWon() {
-        if (arrVeggies.length === 0) {
+        if (arrVeggies.length === 0 && playerHealth > 0) {
           document.getElementById('btm-left').textContent = 'Game Won'
           player.alive = true
           player.render()          
