@@ -46,7 +46,7 @@ class Veggies {
     this.y = y
     this.width = width
     this.height = height
-    this.speed = .2
+    this.speed = .75
     this.alive = true
   }
   render() {
@@ -83,7 +83,6 @@ const arrProjectiles = [];
   }
 //my objects on screen
 let player = new Sprite(180, 500, 25, 25)
-// const bullet = new Projectile(190, 490, 2 , '#6645b3', 5, 7)
 const veggie = new Veggies(145, 30, 30, 30)
   
 // veggies array
