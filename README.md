@@ -17,7 +17,8 @@ create and open HTML and add images, sounds and your containers
 
 ### Layout
 To use canvas you need to add it to your layout
-```canvas {
+```
+canvas {
     background-image: url('https://media.istockphoto.com/videos/old-retro-video-game-arcade-clouds-moving-on-a-blue-sky-video-id532530708?s=640x640');
     background-repeat: repeat;
     width: 100%;
@@ -37,12 +38,14 @@ To use canvas you need to add it to your layout
   grid-template-areas: "top-left game top-right"
                         "left game right"
                         "btm-left game btm-right";
-  }```
+  }
+  ```
 
 #### Functions and Rendering
 Add functions to tell javaScript what to do with the objects
 
-```const ctx = game.getContext('2d')
+```
+const ctx = game.getContext('2d')
 
 //burger
 class Sprite {
