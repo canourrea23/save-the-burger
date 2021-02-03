@@ -46,7 +46,7 @@ class Veggies {
     this.y = y
     this.width = width
     this.height = height
-    this.speed = 5
+    this.speed = 1.5
     this.alive = true
   }
   render() {
